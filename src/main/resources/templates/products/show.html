@@ -30,33 +30,33 @@
 
   <!-- Page Heading/Breadcrumbs -->
   <h1 class="mt-4 mb-3">
-    Spring eCommerce <small>Produtos</small>
+    Spring eCommerce <small>products</small>
   </h1>
 
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-    <li class="breadcrumb-item active">Ver Produtos</li>
+    <li class="breadcrumb-item active">Ver products</li>
   </ol>
 
-  <a class="btn btn-primary" href="#" > Criar Produto</a>
-  <h2>Products</h2>
+  <a class="btn btn-primary" th:href="@{/products/create}" > Crear product</a>
+  <h2>products</h2>
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Nome</th>
-        <th scope="col">Descrição</th>
+        <th scope="col">Name</th>
+        <th scope="col">Descripción</th>
         <th scope="col">Inventario</th>
-        <th scope="col">Preço</th>
-        <th scope="col">Ação</th>
-        <th scope="col">Ação</th>
+        <th scope="col">price</th>
+        <th scope="col">Acción</th>
+        <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td ></td>
-        <td ></td>
-        <td ></td>
-        <td ></td>
+      <tr th:each="product:${products}">
+        <td th:text="${product.Name}"></td>
+        <td th:text="${product.description}"></td>
+        <td th:text="${product.quantity}"></td>
+        <td th:text="${product.price}"></td>
         <td><a  class="btn btn-warning" href="">Editar</a> </td>
         <td><a  class="btn btn-danger" href="">Eliminar</a> </td>
       </tr>       
