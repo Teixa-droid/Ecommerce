@@ -23,13 +23,14 @@ import com.shop.ecommerce.service.ProductService;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+
 	private final Logger log = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
 	private ProductService productService;
-	
+
 	List<OrderDetail> details = new ArrayList<OrderDetail>();
-	
+
 	Order order = new Order();
 
 	@GetMapping("")
@@ -42,39 +43,66 @@ public class HomeController {
 
 	@GetMapping("producthome/{id}")
 	public String productHome(@PathVariable Integer id, Model model) {
-		log.info("Id produto enviado como parámetro {}", id);
+		log.info("Id product enviado como parámetro {}", id);
 		Product product = new Product();
-		Optional<Product> productOptional=  productService.get(id);
+		Optional<Product> productOptional = productService.get(id);
 		product = productOptional.get();
-		
+
 		model.addAttribute("product", product);
+
 		return "user/producthome";
 	}
-	
+
 	@PostMapping("/cart")
 	public String addCart(@RequestParam Integer id, @RequestParam Integer quantity, Model model) {
-		OrderDetail orderDetail = new OrderDetail();
+		OrderDetail detailOrder = new OrderDetail();
 		Product product = new Product();
-		double sumTotal =0;
+		double sumTotal = 0;
 
 		Optional<Product> optionalProduct = productService.get(id);
-		log.info("Produto adicionado: {}", optionalProduct.get());
-		log.info("Quantidade: {}", quantity);
-		product=optionalProduct.get();
+		log.info("Product añadido: {}", optionalProduct.get());
+		log.info("Cantidad: {}", quantity);
+		product = optionalProduct.get();
 
-		orderDetail.setQuantity(quantity);
-		orderDetail.setPrice(product.getPrice());
-		orderDetail.setName(product.getName());
-		orderDetail.setTotal(product.getPrice()*quantity);
-		orderDetail.setProduct(product);
+		detailOrder.setQuantity(quantity);
+		detailOrder.setPrice(product.getPrice());
+		detailOrder.setName(product.getName());
+		detailOrder.setTotal(product.getPrice() * quantity);
+		detailOrder.setProduct(product);
 
-		details.add(orderDetail);
+		details.add(detailOrder);
 
-		sumTotal=details.stream().mapToDouble(dt->dt.getTotal()).sum();
+		sumTotal = details.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
 		order.setTotal(sumTotal);
 		model.addAttribute("cart", details);
 		model.addAttribute("order", order);
+
 		return "user/car";
 	}
+
+	@GetMapping("/delete/cart/{id}")
+	public String deleteProductCart(@PathVariable Integer id, Model model) {
+
+		
+		List<OrderDetail> ordersNew = new ArrayList<OrderDetail>();
+
+		for (OrderDetail detailOrder : details) {
+			if (detailOrder.getProduct().getId() != id) {
+				ordersNew.add(detailOrder);
+			}
+		}
+
+		details = ordersNew;
+
+		double sumTotal = 0;
+		sumTotal = details.stream().mapToDouble(dt -> dt.getTotal()).sum();
+
+		order.setTotal(sumTotal);
+		model.addAttribute("cart", details);
+		model.addAttribute("order", order);
+
+		return "user/car";
+	}
+
 }
