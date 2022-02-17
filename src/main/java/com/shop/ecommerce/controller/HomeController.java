@@ -70,7 +70,12 @@ public class HomeController {
 		detailOrder.setTotal(product.getPrice() * quantity);
 		detailOrder.setProduct(product);
 
-		details.add(detailOrder);
+		Integer idProduct = product.getId();
+		boolean accessed = details.stream().anyMatch(p -> p.getProduct().getId() == idProduct);
+
+		if (!accessed) {
+			details.add(detailOrder);
+		}
 
 		sumTotal = details.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
@@ -84,7 +89,6 @@ public class HomeController {
 	@GetMapping("/delete/cart/{id}")
 	public String deleteProductCart(@PathVariable Integer id, Model model) {
 
-		
 		List<OrderDetail> ordersNew = new ArrayList<OrderDetail>();
 
 		for (OrderDetail detailOrder : details) {
@@ -103,6 +107,14 @@ public class HomeController {
 		model.addAttribute("order", order);
 
 		return "user/car";
+	}
+
+	@GetMapping("/getCart")
+	public String getCart(Model model) {
+
+		model.addAttribute("cart", details);
+		model.addAttribute("order", order);
+		return "/user/car";
 	}
 
 }
