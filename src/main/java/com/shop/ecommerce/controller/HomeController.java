@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +35,7 @@ public class HomeController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private IUserService userService;
 	@Autowired
@@ -129,10 +131,10 @@ public class HomeController {
 		model.addAttribute("order", order);
 		return "/user/car";
 	}
-	
+
 	@GetMapping("/order")
 	public String order(Model model) {
-		User user =userService.findById(1).get();
+		User user = userService.findById(1).get();
 
 		model.addAttribute("cart", details);
 		model.addAttribute("order", order);
@@ -140,30 +142,36 @@ public class HomeController {
 
 		return "user/orderresume";
 	}
-	
-		@GetMapping("/saveOrder")
-		public String saveOrder() {
-			Date created_at = new Date();
-			order.setCreated_at(created_at);
-			order.setNumber(orderService.generateNumberOrder());
 
-			
-			User usuario =userService.findById(1).get();
+	@GetMapping("/saveOrder")
+	public String saveOrder() {
+		Date created_at = new Date();
+		order.setCreated_at(created_at);
+		order.setNumber(orderService.generateNumberOrder());
 
-			order.setUser(usuario);
-			orderService.save(order);
+		User user = userService.findById(1).get();
 
-			
-			for (OrderDetail dt:details) {
-				dt.setOrder(order);
-				detalleOrderService.save(dt);
-			}
+		order.setUser(user);
+		orderService.save(order);
 
-			
-			order = new Order();
-			details.clear();
-
-			return "redirect:/";
+		for (OrderDetail dt : details) {
+			dt.setOrder(order);
+			detalleOrderService.save(dt);
 		}
+
+		order = new Order();
+		details.clear();
+
+		return "redirect:/";
+	}
+
+	@PostMapping("/search")
+	public String searchProduct(@RequestParam String name, Model model) {
+		log.info("Nome do produto: {}", name);
+		List<Product> products = productService.findAll().stream().filter(p -> p.getName().contains(name))
+				.collect(Collectors.toList());
+		model.addAttribute("products", products);
+		return "user/home";
+	}
 
 }
