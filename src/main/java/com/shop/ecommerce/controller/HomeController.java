@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.shop.ecommerce.model.Order;
 import com.shop.ecommerce.model.OrderDetail;
 import com.shop.ecommerce.model.Product;
+import com.shop.ecommerce.model.User;
+import com.shop.ecommerce.service.IUserService;
 import com.shop.ecommerce.service.ProductService;
 
 @Controller
@@ -28,6 +30,9 @@ public class HomeController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private IUserService userService;
 
 	List<OrderDetail> details = new ArrayList<OrderDetail>();
 
@@ -60,8 +65,8 @@ public class HomeController {
 		double sumTotal = 0;
 
 		Optional<Product> optionalProduct = productService.get(id);
-		log.info("Product añadido: {}", optionalProduct.get());
-		log.info("Cantidad: {}", quantity);
+		log.info("Produto adicionado: {}", optionalProduct.get());
+		log.info("Quantidade: {}", quantity);
 		product = optionalProduct.get();
 
 		detailOrder.setQuantity(quantity);
@@ -115,6 +120,17 @@ public class HomeController {
 		model.addAttribute("cart", details);
 		model.addAttribute("order", order);
 		return "/user/car";
+	}
+	
+	@GetMapping("/order")
+	public String order(Model model) {
+		User user =userService.findById(1).get();
+
+		model.addAttribute("cart", details);
+		model.addAttribute("order", order);
+		model.addAttribute("user", user);
+
+		return "user/orderresume";
 	}
 
 }
