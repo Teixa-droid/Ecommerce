@@ -1,6 +1,7 @@
 package com.shop.ecommerce.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,8 @@ import com.shop.ecommerce.model.Order;
 import com.shop.ecommerce.model.OrderDetail;
 import com.shop.ecommerce.model.Product;
 import com.shop.ecommerce.model.User;
+import com.shop.ecommerce.service.IDetailOrderService;
+import com.shop.ecommerce.service.IOrderService;
 import com.shop.ecommerce.service.IUserService;
 import com.shop.ecommerce.service.ProductService;
 
@@ -33,6 +36,11 @@ public class HomeController {
 	
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IOrderService orderService;
+
+	@Autowired
+	private IDetailOrderService detalleOrderService;
 
 	List<OrderDetail> details = new ArrayList<OrderDetail>();
 
@@ -132,5 +140,30 @@ public class HomeController {
 
 		return "user/orderresume";
 	}
+	
+		@GetMapping("/saveOrder")
+		public String saveOrder() {
+			Date created_at = new Date();
+			order.setCreated_at(created_at);
+			order.setNumber(orderService.generateNumberOrder());
+
+			
+			User usuario =userService.findById(1).get();
+
+			order.setUser(usuario);
+			orderService.save(order);
+
+			
+			for (OrderDetail dt:details) {
+				dt.setOrder(order);
+				detalleOrderService.save(dt);
+			}
+
+			
+			order = new Order();
+			details.clear();
+
+			return "redirect:/";
+		}
 
 }

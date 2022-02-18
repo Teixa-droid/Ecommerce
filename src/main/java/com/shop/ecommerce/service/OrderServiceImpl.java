@@ -23,7 +23,7 @@ public class OrderServiceImpl implements IOrderService {
 		return orderRepository.findAll();
 	}
 	// 0000010
-	public String generateOrderNumber() {
+	public String generateNumberOrder() {
 		int number=0;
 		String numberConcatenated="";
 
