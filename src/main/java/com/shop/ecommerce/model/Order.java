@@ -1,13 +1,14 @@
 package com.shop.ecommerce.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,8 +26,8 @@ public class Order {
 	@ManyToOne
 	private User user;
 
-	@OneToOne(mappedBy = "order")
-	private OrderDetail detail;
+	@OneToMany(mappedBy = "order")
+	private List<OrderDetail> detail;
 
 	public Order() {
 		// TODO Auto-generated constructor stub
@@ -89,11 +90,11 @@ public class Order {
 		this.user = user;
 	}
 
-	public OrderDetail getDetail() {
+	public List<OrderDetail> getDetail() {
 		return detail;
 	}
 
-	public void setDetail(OrderDetail detail) {
+	public void setDetail(List<OrderDetail> detail) {
 		this.detail = detail;
 	}
 

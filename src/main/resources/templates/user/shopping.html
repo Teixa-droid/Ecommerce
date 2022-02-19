@@ -57,10 +57,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td >4555454</td>
-                  <td >Date of Purchase</td>
-                  <td >Total</td>
+                 <tr th:each="orden: ${orders}">
+                  <td th:text="${orden.number}"></td>
+                  <td th:text="${orden.created_at}" ></td>
+                  <td th:text="${orden.total}" ></td>
                   <td><a href="orderresume.html" class="btn btn-success">See Detail</a></td>
                 </tr>
               </tbody>
