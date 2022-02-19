@@ -29,7 +29,8 @@
 			<div class="container">
 				<a class="navbar-brand" th:href="@{/}">Spring eCommerce</a>
 
-				<form class="form-inline my-2 my-lg-0" method="post" th:action="@{/search}">
+				<form class="form-inline my-2 my-lg-0" method="post"
+					th:action="@{/search}">
 					<input class="form-control mr-sm-2" type="search"
 						placeholder="Buscar" aria-label="Search" name="name"
 						autocomplete="off">
@@ -44,36 +45,39 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarResponsive">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link" th:href="@{/getCart}">Cart</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/user/login}">Login</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/getCart}">Cart</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/user/login}">Login</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 
 	</div>
-<!-- Navigation -->
-<div th:fragment="header-user">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-		<div class="container">
-			<a class="navbar-brand" th:href="@{/}">Spring eCommerce</a>
+	<!-- Navigation -->
+	<div th:fragment="header-user">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+			<div class="container">
+				<a class="navbar-brand" th:href="@{/}">Spring eCommerce</a>
 
-			<form class="form-inline my-2 my-lg-0" method="post" th:action="@{/search}">
-				<input class="form-control mr-sm-2" type="search"
-					placeholder="Buscar" aria-label="Search" name="name"
-					autocomplete="off">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-			</form>
+				<form class="form-inline my-2 my-lg-0" method="post"
+					th:action="@{/search}">
+					<input class="form-control mr-sm-2" type="search"
+						placeholder="Buscar" aria-label="Search" name="name"
+						autocomplete="off">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+				</form>
 
 
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarResponsive" aria-controls="navbarResponsive"
-				aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item dropdown"><a
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarResponsive" aria-controls="navbarResponsive"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#"
 							id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"> USER </a>
@@ -81,20 +85,22 @@
 							<div class="dropdown-menu"
 								aria-labelledby="navbarDropdownMenuLink">
 								<a class="dropdown-item" th:href="@{/user/shopping}">Compras</a>
-								<a class="dropdown-item" th:href="@{/getCart}">Cart</a> 
+								<a class="dropdown-item" th:href="@{/getCart}">Cart</a> <a
+									class="dropdown-item" th:href="@{/user/logout}">Logout</a>
 							</div></li>
-				</ul>
+					</ul>
+				</div>
 			</div>
-		</div>
-	</nav>
+		</nav>
 
-</div>
+	</div>
 
 	<!-- Footer -->
 	<div th:fragment="footer">
 		<footer class="py-5 bg-dark">
 			<div class="container">
-				<p class="m-0 text-center text-white">Copyright &copy;Ruben Teixeira</p>
+				<p class="m-0 text-center text-white">Copyright &copy;Ruben
+					Teixeira</p>
 			</div>
 			<!-- /.container -->
 		</footer>

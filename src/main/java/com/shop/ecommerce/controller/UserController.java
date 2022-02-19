@@ -1,7 +1,5 @@
 package com.shop.ecommerce.controller;
 
-
-
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,7 @@ public class UserController {
 
 	@Autowired
 	private IUserService userService;
-	
+
 	@Autowired
 	private IOrderService orderService;
 
@@ -47,6 +45,7 @@ public class UserController {
 		userService.save(user);
 		return "redirect:/";
 	}
+
 	@GetMapping("/login")
 	public String login() {
 		return "user/login";
@@ -56,44 +55,50 @@ public class UserController {
 	public String acceder(User user, HttpSession session) {
 		logger.info("Acce: {}", user);
 
-		Optional<User> user1=userService.findByEmail(user.getEmail());
-		//logger.info("User de db: {}", user.get());
+		Optional<User> user1 = userService.findByEmail(user.getEmail());
+		// logger.info("User de db: {}", user.get());
 
 		if (user1.isPresent()) {
 			session.setAttribute("iduser", user1.get().getId());
 			if (user1.get().getType().equals("ADMIN")) {
 				return "redirect:/administrator";
-			}else {
+			} else {
 				return "redirect:/";
 			}
-		}else {
+		} else {
 			logger.info("User nao existe");
 		}
 
 		return "redirect:/";
 	}
+
 	@GetMapping("/shopping")
 	public String obtenerCompras(Model model, HttpSession session) {
 		model.addAttribute("session", session.getAttribute("iduser"));
-		User user= userService.findById(  Integer.parseInt(session.getAttribute("iduser").toString()) ).get();
-		List<Order> orders= orderService.findByUser(user);
+		User user = userService.findById(Integer.parseInt(session.getAttribute("iduser").toString())).get();
+		List<Order> orders = orderService.findByUser(user);
 		logger.info("orders {}", orders);
 
 		model.addAttribute("orders", orders);
 		return "user/shopping";
 	}
-	
+
 	@GetMapping("/detail/{id}")
 	public String detailPurchase(@PathVariable Integer id, HttpSession session, Model model) {
 		logger.info("Id order: {}", id);
-		Optional<Order> order=orderService.findById(id);
+		Optional<Order> order = orderService.findById(id);
 
 		model.addAttribute("details", order.get().getDetail());
 
-
-		//session
+		// session
 		model.addAttribute("session", session.getAttribute("iduser"));
 		return "user/detailpurchase";
+	}
+
+	@GetMapping("/logout")
+	public String cerrarSesion(HttpSession session) {
+		session.removeAttribute("iduser");
+		return "redirect:/";
 	}
 
 }
