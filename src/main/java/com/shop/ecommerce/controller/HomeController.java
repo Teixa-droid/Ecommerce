@@ -1,5 +1,7 @@
 package com.shop.ecommerce.controller;
 
+import javax.servlet.http.HttpSession;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,8 +51,8 @@ public class HomeController {
 	Order order = new Order();
 
 	@GetMapping("")
-	public String home(Model model) {
-
+	public String home(Model model, HttpSession session) {
+		log.info("User: {}", session.getAttribute("iduser"));
 		model.addAttribute("products", productService.findAll());
 
 		return "user/home";
@@ -133,8 +135,8 @@ public class HomeController {
 	}
 
 	@GetMapping("/order")
-	public String order(Model model) {
-		User user = userService.findById(1).get();
+	public String order(Model model, HttpSession session) {
+		User user = userService.findById( Integer.parseInt(session.getAttribute("iduser").toString())).get();
 
 		model.addAttribute("cart", details);
 		model.addAttribute("order", order);
@@ -144,12 +146,12 @@ public class HomeController {
 	}
 
 	@GetMapping("/saveOrder")
-	public String saveOrder() {
+	public String saveOrder(HttpSession session) {
 		Date created_at = new Date();
 		order.setCreated_at(created_at);
 		order.setNumber(orderService.generateNumberOrder());
 
-		User user = userService.findById(1).get();
+		User user = userService.findById( Integer.parseInt(session.getAttribute("iduser").toString())  ).get();
 
 		order.setUser(user);
 		orderService.save(order);

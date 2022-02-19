@@ -2,6 +2,7 @@ package com.shop.ecommerce.controller;
 
 import java.io.IOException;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shop.ecommerce.model.Product;
 import com.shop.ecommerce.model.User;
+import com.shop.ecommerce.service.IUserService;
 import com.shop.ecommerce.service.ProductService;
 import com.shop.ecommerce.service.UploadFileService;
+import com.shop.ecommerce.service.UserServiceImpl;
 
 @Controller
 @RequestMapping("/products")
@@ -27,6 +30,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private IUserService userService;
 
 	@Autowired
 	private UploadFileService upload;
@@ -43,9 +49,10 @@ public class ProductController {
 	}
 
 	@PostMapping("/save")
-	public String save(Product product, @RequestParam("img") MultipartFile file) throws IOException {
+	public String save(Product product, @RequestParam("img") MultipartFile file, HttpSession session)
+			throws IOException {
 		LOGGER.info("Este é o objeto do produto {}", product);
-		User u = new User(1, "", "", "", "", "", "", "");
+		User u = userService.findById(Integer.parseInt(session.getAttribute("iduser").toString())).get();
 		product.setUser(u);
 
 		// image
@@ -77,7 +84,7 @@ public class ProductController {
 		Product p = new Product();
 		p = productService.get(product.getId()).get();
 		if (file.isEmpty()) {
-			
+
 			product.setImage(p.getImage());
 		} else {
 
