@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -80,6 +81,19 @@ public class UserController {
 
 		model.addAttribute("orders", orders);
 		return "user/shopping";
+	}
+	
+	@GetMapping("/detail/{id}")
+	public String detailPurchase(@PathVariable Integer id, HttpSession session, Model model) {
+		logger.info("Id order: {}", id);
+		Optional<Order> order=orderService.findById(id);
+
+		model.addAttribute("details", order.get().getDetail());
+
+
+		//session
+		model.addAttribute("session", session.getAttribute("iduser"));
+		return "user/detailpurchase";
 	}
 
 }
