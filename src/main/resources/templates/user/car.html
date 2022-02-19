@@ -24,7 +24,10 @@
 <body>
 
 	<!-- Navigation -->
-	<div th:include="user/template_user.html::header"></div>
+	<div th:include="user/template_user.html::header"
+		th:if="${session==null}"></div>
+	<div th:include="user/template_user.html::header-user"
+		th:unless="${session==null}"></div>
 
 	<!-- Page Content -->
 	<div class="container">
@@ -59,7 +62,9 @@
 									<td th:text="${dorder.price}"></td>
 									<td th:text="${dorder.quantity}"></td>
 									<td th:text="${dorder.total}"></td>
-									<td><a th:href="@{/delete/cart/{id}   (id=${dorder.product.id}) }" class="btn btn-danger">Exit</a></td>
+									<td><a
+										th:href="@{/delete/cart/{id}   (id=${dorder.product.id}) }"
+										class="btn btn-danger">Exit</a></td>
 								</tr>
 							</tbody>
 						</table>

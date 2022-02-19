@@ -24,9 +24,10 @@
 <body>
 
 	<!-- Navigation -->
-	<div th:include="user/template_user.html::header">
-	
-	</div>
+	<div th:include="user/template_user.html::header"
+		th:if="${session==null}"></div>
+	<div th:include="user/template_user.html::header-user"
+		th:unless="${session==null}"></div>
 
 	<!-- Page Content -->
 	<div class="container">
@@ -48,8 +49,8 @@
 						<p class="card-text" th:text="${product.name}"></p>
 					</div>
 					<div class="card-footer">
-						<a th:href="@{/producthome/{id}  (id=${product.id})  }" class="btn btn-success">Ver
-							produto</a>
+						<a th:href="@{/producthome/{id}  (id=${product.id})  }"
+							class="btn btn-success">Ver produto</a>
 					</div>
 				</div>
 			</div>
@@ -61,8 +62,7 @@
 	<!-- /.container -->
 
 	<!-- Footer -->
-	<div th:include="user/template_user.html::footer">
-	</div>
+	<div th:include="user/template_user.html::footer"></div>
 
 	<!-- Bootstrap core JavaScript -->
 	<!-- Bootstrap core JavaScript -->
