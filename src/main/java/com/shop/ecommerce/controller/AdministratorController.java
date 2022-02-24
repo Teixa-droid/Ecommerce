@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.shop.ecommerce.service.IUserService;
+import com.shop.ecommerce.model.Order;
 import com.shop.ecommerce.model.Product;
 import com.shop.ecommerce.service.IOrderService;
 import com.shop.ecommerce.service.ProductService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/administrator")
@@ -21,6 +26,7 @@ public class AdministratorController {
 	private IUserService userService;
 	@Autowired
 	private IOrderService ordersService;
+	private Logger logg= LoggerFactory.getLogger(AdministratorController.class);
 	
 	@GetMapping("")
 	public String home(Model model) {
@@ -38,5 +44,16 @@ public class AdministratorController {
 		model.addAttribute("orders", ordersService.findAll());
 		return "administrator/orders";
 	}
+	
+	@GetMapping("/detail/{id}")
+	public String detail(Model model, @PathVariable Integer id) {
+		logg.info("Id da entrega {}",id);
+		Order order= ordersService.findById(id).get();
+
+		model.addAttribute("details", order.getDetail());
+
+		return "administrator/orderdetail";
+	}
+
 
 }

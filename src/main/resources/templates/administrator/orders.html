@@ -59,8 +59,9 @@
 									<td th:text="${order.number}"></td>
 									<td th:text="${order.created_at}"></td>
 									<td th:text="${order.total}"></td>
-									<td><a href="orderdetail.html" class="btn btn-success">Ver
-											detalhes</a></td>
+									<td><a
+										th:href="@{/administrator/detail/{id} (id=${order.id}) }"
+										class="btn btn-success">Ver detalhes</a></td>
 								</tr>
 							</tbody>
 						</table>
