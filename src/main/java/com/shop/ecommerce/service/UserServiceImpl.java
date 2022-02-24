@@ -1,5 +1,6 @@
 package com.shop.ecommerce.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,9 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public Optional<User> findByEmail(String email) {
 		return userRepository.findByEmail(email);
+	}
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 }
